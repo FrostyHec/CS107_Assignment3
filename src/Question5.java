@@ -12,12 +12,26 @@ public class Question5 {
         //思路：暴力扫描行、列、左斜、右斜
         int[][] chessBoard = generateChessBoard(sc.nextInt());
 
-        //离谱啊居然还有一子多杀的鬼情况，我直接用TreeMap开摆了
-        Map<Integer, Integer> result = new TreeMap<>();
+        //离谱啊居然还有一子多杀的鬼情况，我直接用HashSet开摆了
+        Set<int[]> result = new HashSet<>();
         rowCheck(chessBoard, result);
+        //columnCheck(chessBoard, result);
+
+
+        //排序
+        int[][] arr = new int[result.size()][2];
+        int counter=0;
+        for (int[] x: result ){//set转数组
+            arr[counter][0]=x[0];
+            arr[counter][1]=x[1];
+            counter++;
+        }
+        Arrays.sort(arr,(e1,e2)->(e1[0]==e2[0]?(e1[1]-e2[1]):(e1[0]-e2[0])));//正则表达式排序
+
+
         //打印
-        for (int x : result.keySet()) {//key是x,value是y（别打我写的真的很臭）
-            System.out.println((x + 1) + " " + (result.get(x) + 1));
+        for (int[] x : arr) {//key是x,value是y（别打我写的真的很臭）
+            System.out.println((x[0] + 1) + " " + (x[1] + 1));
         }
     }
 
@@ -31,106 +45,36 @@ public class Question5 {
         return re;
     }
 
-    static void rowCheck(int[][] chessBoard, Map<Integer, Integer> result) {
-
+    static void rowCheck(int[][] chessBoard, Set<int[]> result) {
         int size = chessBoard[0].length;
         for (int i = 0; i < size; i++) {//行
             for (int j = 0; j < size - 3; j++) {//列,只剩三个才黑的话，五连生涯也就结束了罢
-                if (chessBoard[i][j] == 1) {
-                    int[] temp = new int[2];
-                    if (j == size - 4) {//右边被堵住的特殊情况
-                        boolean isWins = true;
-                        for (int k = j + 1; k < size; k++) {
-                            if (chessBoard[i][k] == 0) {
-                                isWins = false;
-                                break;
-                            }
+                if (chessBoard[i][j] == 0) {
+                    continue;
+                }//后面的就是==1，实在太大一个了，这样整理代码干净一点
+                int black = 1;
+                int[] interval = new int[2];
+                for (int k = j + 1; k < j + 5 && k < size && black < 4; k++) {
+                    if (chessBoard[i][k] == 0) {
+                        interval[0] = i;
+                        interval[1] = k;
+                    } else {
+                        black++;
+                    }
+                }
+                if (black == 4) {//连起来了
+                    if (interval[1] != 0) {//间断点不可能为0，为0说明没有间断点
+                        result.add(interval);
+                    } else {
+                        if (j > 0) {//说明不从边界开始
+                            result.add(new int[]{i, j - 1});
                         }
-                        if (isWins) {//赢了
-                            result.put(i, j - 1);
+                        if (j < size - 1) {//说明不在边界结束
+                            result.add(new int[]{i, j + 4});
                         }
-
-                    } else {//一般情况
-                        boolean isWins = true;
-                        for (int k = j + 1; k < j + 5; k++) {
-                            if (chessBoard[i][k] == 0) {
-                                if (temp[1] != 0) {//输入过一次坐标了，由于间断点不可能在边界所以其实不是0就一定输入过一次
-                                    isWins = false;
-                                    break;
-                                } else {
-                                    temp[0] = i;
-                                    temp[1] = k;
-                                }
-                            }
-                        }
-
-                        if (isWins) {//赢了
-                            if (temp[1] != 0) {
-                                result.put(temp[0], temp[1]);
-                            } else {
-                                result.put(i, j - 1);
-                                result.put(i, j + 4);
-                            }
-                        }
-                        //真滴烦，要是真要回退就得用kmp了把，我不懂
-                        //直接搞个烂方法开摆
-                        //复杂度好高，n*n*n*m(五子棋m=5)
                     }
                 }
             }
         }
     }
-
-    static void columnCheck(int[][] chessBoard, Set<int[]> result) {
-        int size = chessBoard[0].length;
-        for (int i = 0; i < size; i++) {//行
-            for (int j = 0; j < size - 3; j++) {//列,只剩三个才黑的话，五连生涯也就结束了罢
-                if (chessBoard[i][j] == 1) {
-                    int[] temp = new int[2];
-                    if (j == size - 4) {//右边被堵住的特殊情况
-                        boolean isWins = true;
-                        for (int k = j + 1; k < size; k++) {
-                            if (chessBoard[i][k] == 0) {
-                                isWins = false;
-                                break;
-                            }
-                        }
-                        if (isWins) {//赢了
-                            int[] first = {i, j - 1};
-                            result.add(first);
-                        }
-
-                    } else {//一般情况
-                        boolean isWins = true;
-                        for (int k = j + 1; k < j + 5; k++) {
-                            if (chessBoard[i][k] == 0) {
-                                if (temp[1] != 0) {//输入过一次坐标了，由于间断点不可能在边界所以其实不是0就一定输入过一次
-                                    isWins = false;
-                                    break;
-                                } else {
-                                    temp[0] = i;
-                                    temp[1] = k;
-                                }
-                            }
-                        }
-
-                        if (isWins) {//赢了
-                            if (temp[1] != 0) {
-                                result.add(temp);
-                            } else {
-                                int[] first = {i, j - 1};
-                                result.add(first);
-                                int[] second = {i, j + 4};
-                                result.add(second);
-                            }
-                        }
-                        //真滴烦，要是真要回退就得用kmp了把，我不懂
-                        //直接搞个烂方法开摆
-                        //复杂度好高，n*n*n*m(五子棋m=5)
-                    }
-                }
-            }
-        }
-    }
-
 }
