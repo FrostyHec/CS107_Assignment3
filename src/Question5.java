@@ -19,20 +19,20 @@ public class Question5 {
         //columnCheck(chessBoard, result);
 
         //提前返回
-        if(result.isEmpty()){
+        if (result.isEmpty()) {
             System.out.println("-1");
             return;
         }
 
         //排序
         int[][] arr = new int[result.size()][2];
-        int counter=0;
-        for (int[] x: result ){//set转数组
-            arr[counter][0]=x[0];
-            arr[counter][1]=x[1];
+        int counter = 0;
+        for (int[] x : result) {//set转数组
+            arr[counter][0] = x[0];
+            arr[counter][1] = x[1];
             counter++;
         }
-        Arrays.sort(arr,(e1,e2)->(e1[0]==e2[0]?(e1[1]-e2[1]):(e1[0]-e2[0])));//正则表达式排序
+        Arrays.sort(arr, (e1, e2) -> (e1[0] == e2[0] ? (e1[1] - e2[1]) : (e1[0] - e2[0])));//正则表达式排序
 
 
         //打印
@@ -52,36 +52,47 @@ public class Question5 {
     }
 
     static void rowCheck(int[][] chessBoard, Set<int[]> result) {
-        int size = chessBoard[0].length;
-        for (int i = 0; i < size; i++) {//行
-            for (int j = 0; j < size - 3; j++) {//列,只剩三个才黑的话，五连生涯也就结束了罢
-                if (chessBoard[i][j] == 0) {
-                    continue;
-                }//后面的就是==1，实在太大一个了，这样整理代码干净一点
-                int black = 1;
-                int[] interval = new int[2];
-                for (int k = j + 1; k < j + 5 && k < size && black < 4; k++) {
-                    if (chessBoard[i][k] == 0) {
-                        interval[0] = i;
-                        interval[1] = k;
-                    } else {
-                        black++;
-                    }
+        int size = chessBoard.length;
+        for (int x = 0; x < size; x++) {//行
+            List<Integer> list = checker(chessBoard[x]);
+            for (int y : list) {
+                result.add(new int[]{x, y});
+            }
+        }
+
+    }
+
+    static List<Integer> checker(int[] line) {//返回有多少个y是杀点
+        int size = line.length;
+        List<Integer> re = new ArrayList<>();
+        for (int j = 0; j < size - 3; j++) {//列,只剩三个才黑的话，五连生涯也就结束了罢
+            if (line[j] == 0) {
+                continue;
+            }//后面的就是==1，实在太大一个了，这样整理代码干净一点
+            int black = 1;
+            int interval = 0;
+            for (int k = j + 1; k < j + 5 && k < size && black < 4; k++) {
+                if (line[k] == 0) {
+                    interval = k;
+                } else {
+                    black++;
                 }
-                if (black == 4) {//赢了
-                    if (interval[1] != 0) {//间断点不可能为0，为0说明没有间断点
-                        result.add(interval);
-                    } else {
-                        if (j > 0) {//说明不从边界开始
-                            result.add(new int[]{i, j - 1});
-                        }
-                        if (j < size - 4) {//说明不在边界结束
-                            result.add(new int[]{i, j + 4});
-                        }
+            }
+
+            if (black == 4) {//赢了
+                if (interval != 0) {//有间断点不可能为0，为0说明没有间断点
+                    re.add(interval);
+                } else {
+                    if (j > 0) {//说明不从边界开始
+                        re.add(j - 1);
+                    }
+                    if (j < size - 4) {//说明不在边界结束
+                        re.add(j + 4);
                     }
                 }
             }
         }
+        return re;
     }
 
 
