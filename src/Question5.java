@@ -1,8 +1,6 @@
 import java.util.*;
 
-//糟糕的代码
-//一堆史山了，我tm真的吐了
-//又要找点，又要去重，又要排序，还好只有两个值可以用map然后开摆，否则我真的要紫砂了
+//一堆史山了，我真的吐了
 //能不能遍历n^2的棋盘上所有点的8个方向啊，感觉这样会比我这种行扫描简单一点？这个方法期中考完再写好了
 //回退还要用kmp我不会我直接开摆了
 public class Question5 {
@@ -11,9 +9,8 @@ public class Question5 {
     //感觉chessboard这些可以直接搞在这里作为类的公共变量，不用无语地传来传去
     private static int[][] chessBoard;
 
-    //离谱啊居然还有一子多杀的鬼情况，我直接用HashSet开摆了
-    //摆不了大无语，貌似数组哈希出来居然是不一样的，我不懂了
-    //private static Set<int[]> result = new HashSet<>();
+    //离谱啊居然还有一子多杀的鬼情况，我试着用hashSet开摆
+    //结果发现摆不了大无语，貌似元素相同的数组哈希出来居然是不一样的，我不懂了
     private static List<int[]> result = new ArrayList<>();
 
     static Scanner sc = new Scanner(System.in);
@@ -21,7 +18,6 @@ public class Question5 {
     public static void main(String[] args) {
         //思路：暴力扫描行、列、左斜、右斜
         chessBoard = generateChessBoard(sc.nextInt());
-
 
         //判断与添加
         rowCheck();
@@ -181,5 +177,6 @@ public class Question5 {
         }
     }
 
-
+    //写完还是有点成就感的，不过我突然感觉写一个简单的五子棋程序不是那么容易了
+    //没准需要在动工之前整个画一下框架图，思考有什么部分是可以重复利用的
 }
