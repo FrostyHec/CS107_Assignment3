@@ -13,10 +13,16 @@ public class Question5 {
         int[][] chessBoard = generateChessBoard(sc.nextInt());
 
         //离谱啊居然还有一子多杀的鬼情况，我直接用HashSet开摆了
+        //判断与添加
         Set<int[]> result = new HashSet<>();
         rowCheck(chessBoard, result);
         //columnCheck(chessBoard, result);
 
+        //提前返回
+        if(result.isEmpty()){
+            System.out.println("-1");
+            return;
+        }
 
         //排序
         int[][] arr = new int[result.size()][2];
@@ -62,14 +68,14 @@ public class Question5 {
                         black++;
                     }
                 }
-                if (black == 4) {//连起来了
+                if (black == 4) {//赢了
                     if (interval[1] != 0) {//间断点不可能为0，为0说明没有间断点
                         result.add(interval);
                     } else {
                         if (j > 0) {//说明不从边界开始
                             result.add(new int[]{i, j - 1});
                         }
-                        if (j < size - 1) {//说明不在边界结束
+                        if (j < size - 4) {//说明不在边界结束
                             result.add(new int[]{i, j + 4});
                         }
                     }
@@ -77,4 +83,6 @@ public class Question5 {
             }
         }
     }
+
+
 }
