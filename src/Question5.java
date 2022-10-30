@@ -16,7 +16,7 @@ public class Question5 {
         //判断与添加
         Set<int[]> result = new HashSet<>();
         rowCheck(chessBoard, result);
-        //columnCheck(chessBoard, result);
+        columnCheck(chessBoard, result);
 
         //提前返回
         if (result.isEmpty()) {
@@ -61,7 +61,25 @@ public class Question5 {
         }
 
     }
+    static void columnCheck(int[][] chessBoard, Set<int[]> result) {
+        int size = chessBoard.length;
 
+        //想不到居然是从question1抄的转置
+        int[][] transpose = new int[size][size];
+        for (int i = 0; i < size; i++) {//row
+            for (int j = 0; j < size; j++) {//column
+                transpose[j][i] = chessBoard[i][j];
+            }
+        }
+
+        for (int y = 0; y < size; y++) {//行
+            List<Integer> list = checker(transpose[y]);
+            for (int x : list) {//返回的是一堆x值
+                result.add(new int[]{x, y});
+            }
+        }
+
+    }
     static List<Integer> checker(int[] line) {//返回有多少个y是杀点
         int size = line.length;
         List<Integer> re = new ArrayList<>();
@@ -94,6 +112,7 @@ public class Question5 {
         }
         return re;
     }
+
 
 
 }
