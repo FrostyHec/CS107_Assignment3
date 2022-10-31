@@ -1,2 +1,3 @@
 # CS107_Assignment3
-I am COMPLETELY SCARED by the difficulty of this assignment
+I am COMPLETELY SCARED by the difficulty of this assignment  
+我认为第五个比前四个加起来都麻烦……
