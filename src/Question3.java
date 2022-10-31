@@ -2,11 +2,12 @@ import java.util.Scanner;
 
 public class Question3 {
     static Scanner sc = new Scanner(System.in);
-    static final int origin = 100;//原点就是(origin,origin)
+    static final int origin = 101;//原点就是(origin,origin)
 
     public static void main(String[] args) {
         //可以优化的，但是既然数字只有4w次那就暴力点算了
-        shapeKind[][] canvas = new shapeKind[origin * 2][origin * 2];
+        int size=origin*2+2;
+        shapeKind[][] canvas = new shapeKind[size][size];
         double area = 0;
         int n = sc.nextInt();
         for (int i = 0; i < n; i++) {
@@ -16,8 +17,8 @@ public class Question3 {
                 generateCircle(canvas, sc.nextInt(), sc.nextInt());
             }
         }
-        for (int i = 0; i < origin * 2; i++) {
-            for (int j = 0; j < origin * 2; j++) {
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
                 shapeKind x = canvas[i][j];
                 if (x != null) {
                     area += x.getValue();

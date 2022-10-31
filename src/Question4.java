@@ -21,13 +21,13 @@ public class Question4 {
             }
             for (int j = down; j > up; j--) {//上,如果左右同处一列的话，那么上就会覆盖掉，则应该跳出
                 matrix[j][right] = sc.nextInt();
-                if(left==right){
+                if (left == right) {
                     break;
                 }
             }
             for (int j = right; j > left; j--) {//左，如果上下同处一列的话，那么上就会覆盖掉，则应该跳出
                 matrix[up][j] = sc.nextInt();
-                if(up==down){
+                if (up == down) {
                     break;
                 }
             }
@@ -35,8 +35,8 @@ public class Question4 {
         }
 
         //完全正方体的话，中心格打印不到
-        if(m%2==1&&n%2==1){
-            matrix[m/2][n/2]=sc.nextInt();
+        if (m == n && m % 2 == 1) {
+            matrix[m / 2][n / 2] = sc.nextInt();
         }
 
         //打印
