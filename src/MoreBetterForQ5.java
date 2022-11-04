@@ -21,8 +21,12 @@ public class MoreBetterForQ5 {
             }
         }
 
-        for (int[] x : ans) {
-            System.out.println((x[0] + 1) + " " + (x[1] + 1));
+        if (ans.isEmpty()) {
+            System.out.println("-1");
+        } else {
+            for (int[] x : ans) {
+                System.out.println(x[0] + " " + x[1]);
+            }
         }
     }
 
@@ -66,13 +70,13 @@ public class MoreBetterForQ5 {
         if (chessBoard[x][y] == 0) {
             int up = x - 1, down = x + 1;
             while (down - up <= 5) {
-                if (chessBoard[up][x] != 1 && chessBoard[down][x] != 1) {
+                if (chessBoard[up][y] != 1 && chessBoard[down][y] != 1) {
                     return false;
                 }
-                if (chessBoard[up][x] == 1) {
+                if (chessBoard[up][y] == 1) {
                     up--;
                 }
-                if (down < chessBoard.length && chessBoard[down][x] == 1) {
+                if (chessBoard[down][y] == 1) {
                     down++;
                 }
             }
@@ -83,13 +87,16 @@ public class MoreBetterForQ5 {
 
     static boolean mainDiagonal(int x, int y) {
         if (chessBoard[x][y] == 0) {
+            if (x == 6 && y == 4) {
+                int n = 0;
+            }
             int left = 1, right = 1;
-            while (right - left <= 5) {
+            while (right + left <= 5) {
                 if (chessBoard[x - left][y - left] != 1 && chessBoard[x + right][y + right] != 1) {
                     return false;
                 }
                 if (chessBoard[x - left][y - left] == 1) {
-                    left--;
+                    left++;
                 }
                 if (chessBoard[x + right][y + right] == 1) {
                     right++;
@@ -103,12 +110,12 @@ public class MoreBetterForQ5 {
     static boolean subDiagonal(int x, int y) {
         if (chessBoard[x][y] == 0) {
             int up = 1, down = 1;
-            while (down - up <= 5) {
+            while (down + up <= 5) {
                 if (chessBoard[x - up][y + up] != 1 && chessBoard[x + down][y - down] != 1) {
                     return false;
                 }
                 if (chessBoard[x - up][y + up] == 1) {
-                    up--;
+                    up++;
                 }
                 if (chessBoard[x + down][y - down] == 1) {
                     down++;

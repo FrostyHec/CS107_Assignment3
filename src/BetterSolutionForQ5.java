@@ -100,6 +100,10 @@ public class BetterSolutionForQ5 {
 
         //Print
         {
+            if (ans.isEmpty()) {
+                System.out.println("-1");
+                return;
+            }
             int[][] arr = new int[ans.size()][2];
             int counter = 0;
             for (int[] x : ans) {//set转数组
